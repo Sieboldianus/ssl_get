@@ -6,11 +6,12 @@
 
 ```bash
 cd /etc/apache2/
+# or /etc/nginx/
 mkdir ssl
 apt-get install ftp
 nano ftp.sh
-nano check_ssl.sh
-chmod +x check_ssl.sh ftp.sh
+nano check_cert.sh
+chmod +x check_cert.sh ftp.sh
 ```
 
 ## Cron
