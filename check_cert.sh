@@ -1,8 +1,18 @@
 #!/bin/bash
 # Purpose: Check expiration date of SSL in timeframe
 
-CERT_PATH="/etc/apache2/ssl/"
-CERT_NAME="sample.crt"
+get_expiration_date () { 
+    PEM=$1
+    DAYS=$2
+    openssl x509 -enddate -noout -in "$PEM"  -checkend "$DAYS" | grep -v 'Certificate will not expire'
+}
+
+# Bourne shell(sh) syntax to source
+. './.env'
+
+# get first entry, 
+# split by space character
+CERT_NAME=${FILE%% *}
 
 PEM="$CERT_PATH$CERT_NAME"
 
@@ -10,18 +20,30 @@ PEM="$CERT_PATH$CERT_NAME"
 DAYS="604800"
 # DAYS="10520000"
 
-echo "Checking SSL expiration date.."
+echo "Checking SSL expiration date of $CERT_NAME.."
 
-_openssl="/usr/bin/openssl"
-$_openssl x509 -enddate -noout -in "$PEM"  -checkend "$DAYS" | grep -q 'Certificate will expire'
+# check if exists
+# and if outdated
+if [ -f "$PEM" ];
+then
+    _openssl="/usr/bin/openssl"
+    $_openssl x509 -enddate -noout -in "$PEM"  -checkend "$DAYS" | grep -q 'Certificate will expire'
+else
+    ret_val=true
+fi
 
-# Send email and push message to my mobile
+# check result and optionally retrieve new
 if [ $? -eq 0 ]
 then
-    echo "Cert will expire within 7 days. Checking for new certificate.."
-    sh ./ftp.sh
-    expirationdate=$(openssl x509 -enddate -noout -in "$PEM"  -checkend "$DAYS")
-    echo -e "Cert retrieved: \n$expirationdate"
+    echo "Cert not exists or will expire within 7 days. Checking for new certificate.."
+    . './ftp.sh'
+    sleep 1
+    expirationdate=$(get_expiration_date $CERT_NAME $DAYS)
+    echo "Cert retrieved: $expirationdate"
+    echo "Reloading service.."
+    eval "$RESTART_CMD"
 else
-    echo "Expiration date not yet reached"
+    echo $PEM
+    expirationdate=$(get_expiration_date $PEM $DAYS)
+    echo "Expiration date not yet reached ($expirationdate)"
 fi
