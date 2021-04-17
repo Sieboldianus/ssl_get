@@ -1,12 +1,12 @@
 #!/bin/sh
 
 cd $CERT_PATH
-ftp -n $HOST <<END_SCRIPT
-quote USER $USER
-quote PASS $PASSWD
+ftp -n $FTP_HOST <<END_SCRIPT
+quote USER $FTP_USER
+quote PASS $FTP_PASSWD
 binary
 cd certs
 prompt
-mget $FILE
+mget $CERT_FILES
 quit
 END_SCRIPT

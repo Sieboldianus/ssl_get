@@ -12,7 +12,7 @@ get_expiration_date () {
 
 # get first entry, 
 # split by space character
-CERT_NAME=${FILE%% *}
+CERT_NAME=${CERT_FILES%% *}
 
 PEM="$CERT_PATH$CERT_NAME"
 
