@@ -1,7 +1,8 @@
 #!/bin/bash
 # Purpose: Check expiration date of SSL in timeframe
 
-BASEDIR=$(dirname $0)
+SCRIPT=`readlink -f "$0"`
+SCRIPTPATH=`dirname "$SCRIPT"`
 
 get_expiration_date () { 
     PEM=$1
@@ -10,7 +11,7 @@ get_expiration_date () {
 }
 
 # Bourne shell(sh) syntax to source
-. './.env'
+. "$SCRIPTPATH/.env"
 
 # get first entry, 
 # split by space character
@@ -38,7 +39,7 @@ fi
 if [ $? -eq 0 ]
 then
     echo "Cert not exists or will expire within 7 days. Checking for new certificate.."
-    . '${BASEDIR}/ftp.sh'
+    . "$SCRIPTPATH/ftp.sh"
     sleep 1
     expirationdate=$(get_expiration_date $CERT_NAME $DAYS)
     echo "Cert retrieved: $expirationdate"
