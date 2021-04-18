@@ -10,13 +10,15 @@ cd /etc/apache2/
 # or /etc/nginx/
 mkdir ssl
 apt-get install ftp
+git clone .../ssl_get.git
+cd ssl_get
 chmod +x check_cert.sh ftp.sh
+cp .env.example .env
 ```
 
+Edit parameters in `.env`.
 
-- `cp .env.example .env`
-- edit parameters
-
+Test script:
 ```sh
 sh check_cert.sh
 ```
@@ -31,7 +33,7 @@ sudo crontab -e
 
 Add line:
 ```sh
-5 8 * * 0 /etc/apache2/check_cert.sh
+5 8 * * 0 /etc/apache2/ssl_get/check_cert.sh
 ```
 
 ## Debug
@@ -39,7 +41,8 @@ Add line:
 Inspect crontab logs
 ```sh
 sudo grep "check_cert.sh" /var/log/syslog
-sudo zgrep "check_cert.sh" /var/log/syslog.1.gz
+sudo grep "check_cert.sh" /var/log/syslog.1
+sudo zgrep "check_cert.sh" /var/log/syslog.2.gz
 > Mar 21 08:05:01 cloud CRON[25307]: (root) CMD (/etc/apache2/check_cert.sh)
 ...
 ```
