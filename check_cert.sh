@@ -1,6 +1,8 @@
 #!/bin/bash
 # Purpose: Check expiration date of SSL in timeframe
 
+BASEDIR=$(dirname $0)
+
 get_expiration_date () { 
     PEM=$1
     DAYS=$2
@@ -36,7 +38,7 @@ fi
 if [ $? -eq 0 ]
 then
     echo "Cert not exists or will expire within 7 days. Checking for new certificate.."
-    . './ftp.sh'
+    . '${BASEDIR}/ftp.sh'
     sleep 1
     expirationdate=$(get_expiration_date $CERT_NAME $DAYS)
     echo "Cert retrieved: $expirationdate"
