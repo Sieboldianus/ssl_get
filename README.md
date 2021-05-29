@@ -40,6 +40,8 @@ Add line:
 
 Inspect crontab logs
 ```sh
+sudo find /var/log/. -name \syslog.*.gz -print0 | xargs -0 zgrep "check_cert.sh"
+# or individual
 sudo grep "check_cert.sh" /var/log/syslog
 sudo grep "check_cert.sh" /var/log/syslog.1
 sudo zgrep "check_cert.sh" /var/log/syslog.2.gz
