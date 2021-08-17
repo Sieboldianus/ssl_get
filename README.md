@@ -1,5 +1,11 @@
 # Central Wildcard SSL Cert Setup
 
+## Requirements
+
+```
+apt-get install ftp
+```
+
 ## SSL
 
 
