@@ -24,6 +24,12 @@ cp .env.example .env
 
 Edit parameters in `.env`.
 
+It is possible to define any after-script-hook  
+in `.env` such as reload service nginx, apache,  
+or docker restart. The command must be defined as  
+a variable `RESTART_CMD` that will be executed via  
+`eval` in `check_cert.sh`.  
+
 Test script:
 ```sh
 sh check_cert.sh
