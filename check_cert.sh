@@ -38,7 +38,7 @@ fi
 # check result and optionally retrieve new
 if [ $? -eq 0 ]
 then
-    echo "Cert not exists or will expire within 7 days. Checking for new certificate.."
+    echo "Cert not exists or will expire within $(($DAYS / 60 /60 / 24)) days. Checking for new certificate.."
     . "$SCRIPTPATH/ftp.sh"
     sleep 1
     expirationdate=$(get_expiration_date $CERT_NAME $DAYS)
