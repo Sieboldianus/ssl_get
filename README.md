@@ -3,7 +3,7 @@
 ## Requirements
 
 ```
-apt-get install ftp
+apt-get install ftp openssl
 ```
 
 ## SSL
