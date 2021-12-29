@@ -67,6 +67,7 @@ mail
 ```
 
 <details><summary>Example</summary>
+
 ```output
 Message 1:
 From root@service  Sun Aug 29 08:05:02 2021
@@ -87,6 +88,7 @@ Checking SSL expiration date of wildcard.local.mytld.com.fullchain..
 /etc/apache2/ssl/wildcard.local.mytld.com.fullchain
 Expiration date not yet reached (notAfter=Sep  9 00:16:51 2021 GMT)
 ```
+
 </details>
 
 Test all crontab entries:
