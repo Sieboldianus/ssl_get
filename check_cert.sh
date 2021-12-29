@@ -20,8 +20,9 @@ CERT_NAME=${CERT_FILES%% *}
 PEM="$CERT_PATH$CERT_NAME"
 
 # 7 days in seconds
-DAYS="604800"
-# DAYS="10520000"
+# DAYS="604800"
+# 14 days in seconds
+DAYS="1209600"
 
 echo "Checking SSL expiration date of $CERT_NAME.."
 
