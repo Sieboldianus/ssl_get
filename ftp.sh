@@ -1,7 +1,7 @@
 #!/bin/sh
 
 cd $CERT_PATH
-ftp -n $FTP_HOST <<END_SCRIPT
+ftp -v -n $FTP_HOST <<END_SCRIPT
 quote USER $FTP_USER
 quote PASS $FTP_PASSWD
 binary
@@ -10,3 +10,4 @@ prompt
 mget $CERT_FILES
 quit
 END_SCRIPT
+exit 0
