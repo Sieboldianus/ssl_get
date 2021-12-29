@@ -61,6 +61,34 @@ sudo zgrep "check_cert.sh" /var/log/syslog.2.gz
 ...
 ```
 
+Also, check mail:
+```
+mail
+```
+
+<details><summary>Example</summary>
+```output
+Message 1:
+From root@service  Sun Aug 29 08:05:02 2021
+X-Original-To: root
+From: root@service (Cron Daemon)
+To: root@service
+Subject: Cron <root@service> /etc/apache2/ssl_get/check_cert.sh
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+X-Cron-Env: <SHELL=/bin/sh>
+X-Cron-Env: <HOME=/root>
+X-Cron-Env: <PATH=/usr/bin:/bin>
+X-Cron-Env: <LOGNAME=root>
+Date: Sun, 29 Aug 2021 08:05:02 +0200 (CEST)
+
+Checking SSL expiration date of wildcard.local.mytld.com.fullchain..
+/etc/apache2/ssl/wildcard.local.mytld.com.fullchain
+Expiration date not yet reached (notAfter=Sep  9 00:16:51 2021 GMT)
+```
+</details>
+
 Test all crontab entries:
 ```sh
 crontab -l | grep -v '^#' | cut -f 6- -d ' ' | while read CMD; do eval $CMD; done
