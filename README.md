@@ -48,6 +48,11 @@ Add line:
 5 8 * * 0 /etc/apache2/ssl_get/check_cert.sh
 ```
 
+Use (e.g.) [crontab.guru](https://crontab.guru/#5_8_*_*_*) to change
+frequency/ timespan. If you have multiple servers pulling certificates,
+provide some variance to avoid FTP Error 421 (Too many simultaneous 
+connections).
+
 ## Debug
 
 Inspect crontab logs
