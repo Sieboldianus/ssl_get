@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 cd $CERT_PATH
 ftp -v -n $FTP_HOST <<END_SCRIPT
@@ -10,4 +10,3 @@ prompt
 mget $CERT_FILES
 quit
 END_SCRIPT
-exit 0

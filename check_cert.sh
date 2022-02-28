@@ -1,6 +1,9 @@
 #!/bin/bash
 # Purpose: Check expiration date of SSL in timeframe
 
+# exit on error
+set -e
+
 SCRIPT=`readlink -f "$0"`
 SCRIPTPATH=`dirname "$SCRIPT"`
 
@@ -40,12 +43,12 @@ fi
 if [ $? -eq 0 ]
 then
     echo "Cert not exists or will expire within $(($DAYS / 60 /60 / 24)) days. Checking for new certificate.."
-    . "$SCRIPTPATH/ftp.sh"
+    source "$SCRIPTPATH/ftp.sh"
     sleep 1
     expirationdate=$(get_expiration_date $CERT_NAME $DAYS)
     echo "Cert retrieved: $expirationdate"
     echo "Reloading service.."
-    eval "$RESTART_CMD"
+    /bin/bash -c "${RESTART_CMD:-/usr/sbin/service nginx reload}"
 else
     echo $PEM
     expirationdate=$(get_expiration_date $PEM $DAYS)
