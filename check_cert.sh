@@ -19,7 +19,6 @@ CERT_NAME=${CERT_FILES%% *}
 
 PEM="$CERT_PATH$CERT_NAME"
 
-echo "$PEM"
 # 7 days in seconds
 # DAYS="604800"
 # 14 days in seconds
