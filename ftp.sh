@@ -1,11 +1,11 @@
-#!/bin/bash
+#!/bin/sh
 
 cd $CERT_PATH
 ftp -v -n $FTP_HOST <<END_SCRIPT
 quote USER $FTP_USER
 quote PASS $FTP_PASSWD
 binary
-cd certs
+cd $FTP_CERTS_DIR
 prompt
 mget $CERT_FILES
 quit
