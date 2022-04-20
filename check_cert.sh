@@ -1,5 +1,8 @@
-#!/bin/bash
+#!/bin/sh
+
 # Purpose: Check expiration date of SSL in timeframe
+# and retrieve new SSL certs from remote,
+# either via scp or ftp
 
 SCRIPT=`readlink -f "$0"`
 SCRIPTPATH=`dirname "$SCRIPT"`
@@ -7,7 +10,8 @@ SCRIPTPATH=`dirname "$SCRIPT"`
 get_expiration_date () {
     PEM=$1
     DAYS=$2
-    /usr/bin/openssl x509 -enddate -noout -in "$PEM"  -checkend "$DAYS" | grep -v 'Certificate will not expire'
+    /usr/bin/openssl x509 -enddate -noout -in "$PEM"  -checkend "$DAYS" | \
+    grep -v 'Certificate will not expire'
 }
 
 # Bourne shell(sh) syntax to source
@@ -30,7 +34,8 @@ echo "Checking SSL expiration date of $CERT_NAME.."
 # and if outdated
 if [ -f "$PEM" ];
 then
-    /usr/bin/openssl x509 -enddate -noout -in "$PEM"  -checkend "$DAYS" | grep -q 'Certificate will expire'
+    /usr/bin/openssl x509 -enddate -noout -in "$PEM" \
+         -checkend "$DAYS" | grep -q 'Certificate will expire'
 else
     ret_val=true
 fi
@@ -38,10 +43,11 @@ fi
 # check result and optionally retrieve new
 if [ $? -eq 0 ]
 then
-    echo "Cert not exists or will expire within $(($DAYS / 60 /60 / 24)) days. Checking for new certificate.."
-    . "$SCRIPTPATH/ftp.sh"
+    echo "Cert not exists or will expire within $(($DAYS / 60 /60 / 24)) days. \
+        Checking for new certificate.."
+    . "$SCRIPTPATH/$USE_SCRIPT"
     sleep 1
-    expirationdate=$(get_expiration_date $CERT_NAME $DAYS)
+    expirationdate=$(get_expiration_date $PEM $DAYS)
     echo "Cert retrieved: $expirationdate"
     echo "Reloading service.."
     /bin/bash -c "${RESTART_CMD:-/usr/sbin/service nginx reload}"
