@@ -1,4 +1,4 @@
-# Script for local distribution of centrally managed SSL Certs
+# Local distribution of centrally managed SSL Certs
 
 A script that helps distribute/update local SSL certs from a centrally
 managed remote location via SCP or FTP. This allows reducing exposure
