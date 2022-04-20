@@ -1,4 +1,10 @@
-# Central Wildcard SSL Cert Setup
+# Script for local distribution of centrally managed SSL Certs
+
+A script that helps distribute/update local SSL certs from a centrally
+managed remote location via SCP or FTP. This allows reducing exposure
+to external services by retrieving SSL (wildcard) certificates from a single
+(centrally managed) ACME instance (e.g.) or a pfsense/opnsense box. Useful
+for local network Split-Brain-DNS Setups or for Demilitarized Zones (DMZ).
 
 ## Requirements
 
@@ -6,7 +12,9 @@
 apt-get install ftp openssl
 ```
 
-## SSL
+Note: `ftp` is only needed if not using `scp`.
+
+## Setup
 
 
 - Console
@@ -48,10 +56,48 @@ Add lines:
 5 8 * * 0 /etc/nginx/ssl_get/check_cert.sh
 ```
 
+This will verify expiration of local SSL certs once a week at 08:05
+and pull new certificates from the remote location, if expiring 
+within the next 14 days. Adjust this default time buffer in [check_cert.sh](check_cert.sh).
+
 Use (e.g.) [crontab.guru](https://crontab.guru/#5_8_*_*_*) to change
 frequency/ timespan. If you have multiple servers pulling certificates
 and if you are using FTP, provide some variance to avoid FTP Error 421 
 (Too many simultaneous connections).
+
+## pfsense/opnsense integration
+
+This is not related to this script in particular.
+
+To store your wildcard certificates from the ACME script on pfsense or 
+opnsense in a remote folder, go to Services > Acme Certificates and click 
+on Edit SSL Certificate.
+
+1. Under Action list, add an action after "/etc/rc.restart_webgui" with the 
+following target
+```
+sh /conf/acme/ftp.sh
+```
+2. Create this script, to forward SSL certs to the central remote folder, e.g.
+```sh
+ftp -n $HOST <<END_SCRIPT
+quote USER $USER
+quote PASS $PASSWD
+binary
+cd certs
+prompt
+mput $FILE
+quit
+END_SCRIPT
+exit 0
+```
+
+<details><summary>Screenshot</summary>
+
+![resources/pfsense.png](resources/pfsense.png)
+
+</details>
+
 
 ## Debug
 
