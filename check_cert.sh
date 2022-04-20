@@ -2,7 +2,7 @@
 
 # Purpose: Check expiration date of SSL in timeframe
 # and retrieve new SSL certs from remote,
-# either via scp or ftp
+# either via scp or ftp, if expiring within a given timeframe
 
 SCRIPT=`readlink -f "$0"`
 SCRIPTPATH=`dirname "$SCRIPT"`
