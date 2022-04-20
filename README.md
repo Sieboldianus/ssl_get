@@ -28,9 +28,10 @@ git clone git@github.com:Sieboldianus/ssl_get.git
 cd ssl_get
 chmod +x check_cert.sh ftp.sh scp.sh
 cp .env.example .env
+nano .env
 ```
 
-Edit parameters in `.env`.
+Change the parameters in `.env` to your needs.
 
 It is possible to define any after-script-hook  
 in `.env` such as reload service nginx, apache,  
