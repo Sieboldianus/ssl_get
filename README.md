@@ -12,13 +12,13 @@ apt-get install ftp openssl
 - Console
 
 ```sh
-cd /etc/apache2/
-# or /etc/nginx/
+cd /etc/nginx/
+# or /etc/apache2/
 mkdir ssl
-apt-get install ftp
+apt-get install ftp # if using ftp
 git clone .../ssl_get.git
 cd ssl_get
-chmod +x check_cert.sh ftp.sh
+chmod +x check_cert.sh ftp.sh scp.sh
 cp .env.example .env
 ```
 
@@ -28,7 +28,7 @@ It is possible to define any after-script-hook
 in `.env` such as reload service nginx, apache,  
 or docker restart. The command must be defined as  
 a variable `RESTART_CMD` that will be executed via  
-`eval` in `check_cert.sh`.  
+via `/bin/bash` in `check_cert.sh`.  
 
 Test script:
 ```sh
@@ -43,15 +43,15 @@ Add cron:
 sudo crontab -e
 ```
 
-Add line:
+Add lines:
 ```sh
-5 8 * * 0 /etc/apache2/ssl_get/check_cert.sh
+5 8 * * 0 /etc/nginx/ssl_get/check_cert.sh
 ```
 
 Use (e.g.) [crontab.guru](https://crontab.guru/#5_8_*_*_*) to change
-frequency/ timespan. If you have multiple servers pulling certificates,
-provide some variance to avoid FTP Error 421 (Too many simultaneous 
-connections).
+frequency/ timespan. If you have multiple servers pulling certificates
+and if you are using FTP, provide some variance to avoid FTP Error 421 
+(Too many simultaneous connections).
 
 ## Debug
 
@@ -62,7 +62,7 @@ sudo find /var/log/. -name \syslog.*.gz -print0 | xargs -0 zgrep "check_cert.sh"
 sudo grep "check_cert.sh" /var/log/syslog
 sudo grep "check_cert.sh" /var/log/syslog.1
 sudo zgrep "check_cert.sh" /var/log/syslog.2.gz
-> Mar 21 08:05:01 cloud CRON[25307]: (root) CMD (/etc/apache2/check_cert.sh)
+> Mar 21 08:05:01 cloud CRON[25307]: (root) CMD (/etc/nginx/check_cert.sh)
 ...
 ```
 
@@ -101,7 +101,7 @@ Test all crontab entries:
 crontab -l | grep -v '^#' | cut -f 6- -d ' ' | while read CMD; do eval $CMD; done
 ```
 
-Check expiration of web address:
+Check expiration of web address manually:
 ```sh
 openssl s_client \
     -servername service.local.mytld.com \
