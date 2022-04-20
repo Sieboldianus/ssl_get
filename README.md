@@ -33,11 +33,11 @@ nano .env
 
 Change the parameters in `.env` to your needs.
 
-It is possible to define any after-script-hook  
-in `.env` such as reload service nginx, apache,  
-or docker restart. The command must be defined as  
-a variable `RESTART_CMD` that will be executed via  
-via `/bin/bash` in `check_cert.sh`.  
+It is possible to define any after-script-hook 
+in `.env` such as reload service nginx, apache, 
+or docker restart. The command must be defined as 
+a variable `RESTART_CMD` that will be executed via 
+via `/bin/bash` in `check_cert.sh`. 
 
 Test script:
 ```sh
