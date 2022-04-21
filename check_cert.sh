@@ -7,11 +7,11 @@
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
-get_expiration_date () {
+get_expiration_date() {
     PEM=$1
     DAYS=$2
-    /usr/bin/openssl x509 -enddate -noout -in "$PEM"  -checkend "$DAYS" | \
-    grep -v 'Certificate will not expire'
+    /usr/bin/openssl x509 -enddate -noout -in "$PEM" -checkend "$DAYS" |
+        grep -v 'Certificate will not expire'
 }
 
 # Bourne shell(sh) syntax to source
@@ -32,18 +32,16 @@ echo "Checking SSL expiration date of $CERT_NAME.."
 
 # check if exists
 # and if outdated
-if [ -f "$PEM" ];
-then
+if [ -f "$PEM" ]; then
     /usr/bin/openssl x509 -enddate -noout -in "$PEM" \
-         -checkend "$DAYS" | grep -q 'Certificate will expire'
+        -checkend "$DAYS" | grep -q 'Certificate will expire'
 else
     ret_val=true
 fi
 
 # check result and optionally retrieve new
-if [ $ret_val -eq 0 ]
-then
-    echo "Cert not exists or will expire within $((DAYS / 60 /60 / 24)) days. \
+if [ $ret_val -eq 0 ]; then
+    echo "Cert not exists or will expire within $((DAYS / 60 / 60 / 24)) days. \
         Checking for new certificate.."
     . "$SCRIPTPATH/$USE_SCRIPT"
     sleep 1
