@@ -4,8 +4,8 @@
 # and retrieve new SSL certs from remote,
 # either via scp or ftp, if expiring within a given timeframe
 
-SCRIPT=`readlink -f "$0"`
-SCRIPTPATH=`dirname "$SCRIPT"`
+SCRIPT=$(readlink -f "$0")
+SCRIPTPATH=$(dirname "$SCRIPT")
 
 get_expiration_date () {
     PEM=$1
@@ -41,9 +41,9 @@ else
 fi
 
 # check result and optionally retrieve new
-if [ $? -eq 0 ]
+if [ $ret_val -eq 0 ]
 then
-    echo "Cert not exists or will expire within $(($DAYS / 60 /60 / 24)) days. \
+    echo "Cert not exists or will expire within $((DAYS / 60 /60 / 24)) days. \
         Checking for new certificate.."
     . "$SCRIPTPATH/$USE_SCRIPT"
     sleep 1
@@ -52,7 +52,7 @@ then
     echo "Reloading service.."
     /bin/bash -c "${RESTART_CMD:-/usr/sbin/service nginx reload}"
 else
-    echo $PEM
-    expirationdate=$(get_expiration_date $PEM $DAYS)
+    echo "$PEM"
+    expirationdate=$(get_expiration_date "$PEM" "$DAYS")
     echo "Expiration date not yet reached ($expirationdate)"
 fi
