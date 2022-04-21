@@ -9,10 +9,12 @@ for local network Split-Brain-DNS Setups or for Demilitarized Zones (DMZ).
 ## Requirements
 
 ```
-apt-get install ftp openssl
+apt-get install ftp openssl sshpass
 ```
 
-Note: `ftp` is only needed if not using `scp`.
+Note:  
+- `ftp` is only needed if not using `scp`.
+- `sshpass` is only needed when using `scp` with a (password protected) keyfile
 
 ## Setup
 
