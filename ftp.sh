@@ -1,7 +1,7 @@
 #!/bin/sh
 
 cd "$CERT_PATH" || exit
-ftp -v -n "$FTP_HOST" <<END_SCRIPT
+ftp -Anv "$FTP_HOST" <<END_SCRIPT
 quote USER $FTP_USER
 quote PASS $FTP_PASSWD
 binary
