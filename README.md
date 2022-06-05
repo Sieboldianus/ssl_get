@@ -28,7 +28,6 @@ mkdir ssl
 apt-get install ftp # if using ftp
 git clone git@github.com:Sieboldianus/ssl_get.git
 cd ssl_get
-chmod +x check_cert.sh ftp.sh scp.sh
 cp .env.example .env
 nano .env
 ```
