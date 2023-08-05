@@ -161,3 +161,8 @@ Check SSL cert:
 openssl s_client \
     -showcerts -connect service.local.mytld.com:443 </dev/null
 ```
+
+Check local SSL cert from disk:
+```sh
+openssl x509 -noout -text -in wildcard.local.mytld.com.fullchain
+```
